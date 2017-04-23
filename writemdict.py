@@ -33,6 +33,8 @@ from ripemd128 import ripemd128
 from cgi import escape
 from pureSalsa20 import Salsa20
 
+ZLIB_LEVEL = 9
+
 try:
 	import lzo
 	HAVE_LZO = True
@@ -49,7 +51,7 @@ def _mdx_compress(data, compression_type=2):
 	if compression_type == 0: #no compression
 		return header + data
 	elif compression_type == 2:
-		return header + zlib.compress(data)
+		return header + zlib.compress(data, ZLIB_LEVEL)
 	elif compression_type == 1:
 		if HAVE_LZO:
 			return header + lzo.compress(data)[5:] #python-lzo adds a 5-byte header.
