@@ -286,8 +286,8 @@ class MDictWriter(object):
 			items = [ n for n in d ]
 
 		#items.sort(key=operator.itemgetter(0))
-		#items.sort(key = lambda x: x[0].lower())
-		items.sort(key = lambda x: (x[0].lower().replace(' ', '').replace('-', ''), x[0].lower()))
+		items.sort(key = lambda x: x[0].lower())
+		#items.sort(key = lambda x: (x[0].lower().replace(' ', '').replace('-', ''), x[0].lower()))
 		
 		self._offset_table = []
 		offset = 0
