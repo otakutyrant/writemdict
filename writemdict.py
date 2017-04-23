@@ -280,8 +280,13 @@ class MDictWriter(object):
 		#  e.record_null: encoded version of the record, null-terminated
 		#
 		# Also sets self._total_record_len to the total length of all record fields.
-		items = list(d.items())
-		items.sort(key=operator.itemgetter(0))
+		if isinstance(d, dict):
+			items = list(d.items())
+		else:
+			items = [ n for n in d ]
+
+		#items.sort(key=operator.itemgetter(0))
+		items.sort(key = lambda x: x[0].lower())
 		
 		self._offset_table = []
 		offset = 0
