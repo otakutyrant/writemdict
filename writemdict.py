@@ -289,11 +289,15 @@ class MDictWriter(object):
 
 		def sort_key (item):
 			text = []
+			part = []
 			word = item[0].lower()
 			for n in word:
 				if n.isalnum() or ord(n) >= 128:
 					text.append(n)
-			return ((''.join(text)), word)
+					part.append(n)
+				else:
+					part.append('~')
+			return ((''.join(text)), ''.join(part), word)
 
 		#items.sort(key = lambda x: x[0].lower())
 		items.sort(key = sort_key)
