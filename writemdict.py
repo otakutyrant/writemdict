@@ -286,8 +286,17 @@ class MDictWriter(object):
 			items = [ n for n in d ]
 
 		#items.sort(key=operator.itemgetter(0))
-		items.sort(key = lambda x: x[0].lower())
-		#items.sort(key = lambda x: (x[0].lower().replace(' ', '').replace('-', ''), x[0].lower()))
+
+		def sort_key (item):
+			text = []
+			word = item[0].lower()
+			for n in word:
+				if n.isalnum() or ord(n) >= 128:
+					text.append(n)
+			return ((''.join(text)), word)
+
+		#items.sort(key = lambda x: x[0].lower())
+		items.sort(key = sort_key)
 		
 		self._offset_table = []
 		offset = 0
@@ -486,6 +495,7 @@ class MDictWriter(object):
 			"""Compact="No" """
 			"""Compat="No" """
 			"""KeyCaseSensitive="No" """
+			"""StripKey="Yes" """
 			"""Description="{description}" """
 			"""Title="{title}" """
 			"""DataSourceFormat="106" """
