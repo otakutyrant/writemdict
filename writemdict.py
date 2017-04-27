@@ -156,6 +156,7 @@ class MDictWriter(object):
 	             register_by = None,
 	             user_email = None,
 	             user_device_id = None,
+				 style = None,
 	             is_mdd=False):
 		"""
 		Prepares the records. A subsequent call to write() writes 
@@ -230,6 +231,7 @@ class MDictWriter(object):
 		self._user_device_id = user_device_id
 		self._compression_type = compression_type
 		self._is_mdd = is_mdd
+		self._style_sheet = style
 		
 		# encoding is set to the string used in the mdx header.
 		# python_encoding is passed on to the python .encode()
@@ -486,6 +488,10 @@ class MDictWriter(object):
 		else:
 			register_by_str = ""
 			regcode = ""
+
+		style_sheet = ""
+		if self._style_sheet:
+			style_sheet = escape(self._style_sheet, quote=True)
 		
 		if not self._is_mdd:
 			header_string = (
@@ -496,14 +502,15 @@ class MDictWriter(object):
 			"""Encoding="{encoding}" """
 			"""Format="Html" """
 			"""CreationDate="{date.year}-{date.month}-{date.day}" """
-			"""Compact="No" """
-			"""Compat="No" """
+			"""Compact="{compact}" """
+			"""Compat="{compact}" """
 			"""KeyCaseSensitive="No" """
 			"""StripKey="Yes" """
 			"""Description="{description}" """
 			"""Title="{title}" """
 			"""DataSourceFormat="106" """
-			"""StyleSheet="" """
+			"""Left2Right="Yes" """
+			"""StyleSheet="{style_sheet}" """
 			"""RegisterBy="{register_by_str}" """
 			"""RegCode="{regcode}"/>\r\n\x00""").format(
 			    version = self._version,
@@ -512,6 +519,8 @@ class MDictWriter(object):
 			    date = datetime.date.today(), 
 			    description=escape(self._description, quote=True),
 			    title=escape(self._title, quote=True),
+				compact=(self._style_sheet and "Yes" or "No"),
+				style_sheet=style_sheet,
 			    register_by_str=register_by_str,
 			    regcode=regcode
 			).encode("utf_16_le")
