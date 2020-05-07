@@ -30,7 +30,7 @@ from __future__ import unicode_literals
 import struct, zlib, operator, sys, datetime
 
 from writemdict.ripemd128 import ripemd128
-from cgi import escape
+from html import escape
 from writemdict.pureSalsa20 import Salsa20
 
 ZLIB_LEVEL = 9
